@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">tp-permission</string>
+    <string name="access_auth">Autoriser l\'accès</string>
+    <string name="message_auth">Vous devez autoriser l\'accès au GPS pour qu\'on puisse récupérer votre position</string>
+    <string name="no_ask_message_auth">Bienvenue sur notre application, pour avoir votre position cliquer sur le bouton \'Autoriser l\'accès</string>
+</resources>
