@@ -6,10 +6,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.champion.theo.tp_permission.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,9 +18,16 @@ class MainActivity : AppCompatActivity() {
      */
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private var permissionHasBeenAsked: Boolean = false
-    private val PERMISSION_REQUEST_LOCATION = 42
 
+    /**
+     * Permission boolean
+     */
+    private var permissionHasBeenAsked: Boolean = false
+
+    /**
+     * Permission code
+     */
+    private val PERMISSION_REQUEST_LOCATION = 42
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        initText()
         return super.onCreateView(name, context, attrs)
     }
 
@@ -46,7 +54,8 @@ class MainActivity : AppCompatActivity() {
                 startLocation()
             } else {
                 // Permission request was denied.
-
+                binding.authText.text = getString(R.string.message_auth)
+                requestLocationPermission()
             }
         }
     }
@@ -54,25 +63,30 @@ class MainActivity : AppCompatActivity() {
     private fun requestLocationPermission() {
         // Permission has not been granted and must be requested.
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // Provide an additional rationale to the user if the permission was not granted
-            // and the user would benefit from additional context for the use of the permission.
-            // Display a SnackBar with a button to request the missing permission.
-            //requestPermissions(arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_LOCATION)
-
+            displayAlertDialog()
         } else {
-
-            // Request the permission. The result will be received in onRequestPermissionResult().
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_LOCATION)
+            askLocationPermission()
         }
     }
 
     private fun initText() {
         if (!permissionHasBeenAsked) {
-            binding.authText.text = R.string.access_auth
+            binding.authText.text = getString(R.string.no_ask_message_auth)
         }
     }
 
-    private fun startLocation() {
+    private fun askLocationPermission() {
+        requestPermissions(arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_LOCATION)
+    }
 
+    private fun displayAlertDialog() {
+        AlertDialog.Builder(baseContext)
+            .setTitle("Delete entry")
+            .setMessage("Vous devez autoriser la localisation")
+            .show()
+    }
+
+    private fun startLocation() {
+        print("Your position is :::")
     }
 }
